@@ -4,7 +4,7 @@
 
 ## Overview
 
-The Employee Performance Management System is designed to streamline the process of managing and analyzing employee performance within an organization. By leveraging advanced SQL techniques, this project offers a robust and scalable solution that can handle various aspects of performance management, from data entry to automated alert notifications.
+The Employee Performance Management System is designed to streamline the process of managing and analyzing employee performance within an organization. By leveraging advanced SQL techniques, this project offers a robust and scalable solution that can handle various aspects of performance management, from data entry to automated alert.
 
 ## Features
 
