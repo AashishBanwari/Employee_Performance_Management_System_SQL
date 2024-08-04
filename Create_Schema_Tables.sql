@@ -12,7 +12,6 @@ CREATE TABLE Employees.Departments
 	DepartmentName NVARCHAR(100) NOT NULL
 )
 
-
 CREATE TABLE Employees.Employee_details
 (
 	EmployeeID INT PRIMARY KEY,
@@ -44,11 +43,7 @@ CREATE TABLE Employees.Goals
 	EndDate DATE,
 	Status NVARCHAR(20)
 )
-
-
-
- Create Alerts table
-
+	
 CREATE TABLE Employees.Alerts (
     AlertID INT PRIMARY KEY IDENTITY(1,1),
     EmployeeID INT FOREIGN KEY REFERENCES Employees.Employee_details(EmployeeID),
