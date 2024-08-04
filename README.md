@@ -4,15 +4,15 @@
 
 ## Overview
 
-The Employee Performance Management System is designed to streamline the process of managing and analyzing employee performance within an organization. By leveraging advanced SQL techniques, this project offers a robust and scalable solution that can handle various aspects of performance management, from data entry to automated alerts.
+The Employee Performance Management System is designed to streamline the process of managing and analyzing employee performance within an organization. By leveraging advanced SQL techniques, this project offers a robust and scalable solution that can handle various aspects of performance management, from data entry to automated alert notifications.
 
 ## Features
 
-- **Comprehensive Database Schema:** Well-structured tables for storing employee, department, performance review, and goal data.
+- **Comprehensive Database Schema:** Well-structured tables for storing employee, department, performance review, goal data, and notification logs.
   
-- **Stored Procedures:** Efficient and reusable stored procedures for common operations such as adding performance reviews and updating goal statuses.
+- **Stored Procedures:** Efficient and Reusable Stored Procedures for common operations such as adding Performance Reviews and updating Goal Status.
   
-- **Triggers:** Intelligent triggers to automatically handle specific events, such as sending alerts for low performance scores.
+- **Triggers:** Intelligent Triggers to Automatically handle specific events, such as sending Alerts/Notifications for low performance scores.
   
 - **Sample Data:** Includes sample data for departments, employees, performance reviews, and goals to demonstrate the functionality.
   
@@ -23,68 +23,78 @@ The Employee Performance Management System is designed to streamline the process
 - [Database Schema](Database-Schema)
 - [Stored Procedures](Stored-Procedures)
 - [Triggers](Triggers)
-- [Sample Data](Sample-Data)
 - [Queries](Queries)
+- [Sample Data](Sample-Data)
 
 ## Database Schema
 
 The database schema is designed to capture all relevant information related to employee performance management. 
 
-Key tables include:
+#### **Schema Name:**
+
+Employees
+
+#### **Tables inside Employees:**
 
 - **Departments:** Stores department information.
-- **Employees:** Stores employee details and their association with departments.
+- **Employee Details:** Stores employee details and their association with departments.
 - **Performance Reviews:** Stores performance review records for employees.
 - **Goals:** Tracks the goals set for employees and their status.
 - **Alert:** A log for email notification sent by the trigger.
 
 ## Stored Procedures
 
-Stored procedures are used to encapsulate common operations, ensuring efficiency and reusability. They help maintain data integrity and simplify complex operations by grouping multiple SQL statements into a single procedure. Key stored procedures in this project include:
+Stored procedures are used to encapsulate common operations, ensuring efficiency and reusability. It helps in maintaining data integrity and simplify complex operations by grouping multiple SQL statements into a single procedure. 
+
+Key stored procedures in this project include:
 
 ### 1.  Add Performance Review:
 
 Adds a new performance review for an employee, capturing essential details such as review date, reviewer, score, and comments. This procedure ensures that performance review records are consistently and accurately inserted into the database.
 
 ```sql
-create procedure sp_AddPerformanceReview
-	@EmployeeID int,
-	@ReviewDate date,
-	@Reviewer nvarchar(50),
-	@Score int,
-	@Comments nvarchar(50)
-as
-begin 
-	insert into Employees.PerformanceReviews (EmployeeID, ReviewDate, Reviewer, Score, Comments)
-    values (@EmployeeID, @ReviewDate, @Reviewer, @Score, @Comments);
-end;
+CREATE PROCEDURE sp_AddPerformanceReview
+	@EmployeeID INT,
+	@ReviewDate DATE,
+	@Reviewer NVARCHAR(50),
+	@Score INT,
+	@Comments NVARCHAR(max)
+AS
+BEGIN 
+	INSERT INTO Employees.PerformanceReviews (EmployeeID, ReviewDate, Reviewer, Score, Comments)
+    	VALUES (@EmployeeID, @ReviewDate, @Reviewer, @Score, @Comments);
+END;
 ```
 ```sql
-exec sp_AddPerformanceReview 2,'2024-06-05','Jack',2,'Poor performance.' -- test the procedure
+-- test the procedure
+EXEC sp_AddPerformanceReview 2,'2024-06-05','Jack',2,'Poor performance.' 
 ```
 ```sql
-select * from Employees.PerformanceReviews -- verify the data
+-- verify the data
+SELECT TOP (1) * FROM Employees.PerformanceReviews ORDER BY ReviewID DESC 
 ```
 ### 2. **Update Goal Status:** 
 
 Updates the status of a goal for an employee. This procedure is crucial for tracking the progress of employee goals and ensuring that the status is updated consistently as goals are completed or modified.
 
 ```sql
-create procedure sp_UpdateGoalStatus
-	@GoalID int,
-	@Status	nvarchar(20)
-as
-begin
-	update Employees.Goals
-	set Status = @status
-	where GoalID = @GoalID;
-end;
+CREATE PROCEDURE sp_UpdateGoalStatus
+	@GoalID INT,
+	@Status	NVARCHAR(20)
+AS
+BEGIN
+	UPDATE Employees.Goals
+	SET Status = @status
+	WHERE GoalID = @GoalID;
+END;
 ```
 ```sql
-exec sp_UpdateGoalStatus @goalID = 3,@Status = 'Completed' -- test the procedure
+-- test the procedure
+EXEC sp_UpdateGoalStatus @goalID = 3,@Status = 'Completed'
 ```
 ```sql
-select * from Employees.Goals -- verify the data
+-- verify the data
+SELECT * FROM Employees.Goals WHERE [GoalID] = 3
 ```
 
 ## Triggers
@@ -96,56 +106,52 @@ Triggers automate specific actions in response to certain events, ensuring data 
 Sends an alert if an employee's performance review score is below a certain threshold. This trigger enhances proactive management by immediately notifying relevant stakeholders when an employee's performance is below acceptable levels, allowing for timely interventions.
 
 ```sql
-create trigger trg_LowPerformanceAlert
-on Employees.PerformanceReviews
-after insert
-as
-begin
-    declare @EmployeeID int, @ReviewID int, @Score int, @EmailAddress nvarchar(50);
+CREATE TRIGGER trg_LowPerformanceAlert
+ON Employees.PerformanceReviews
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @EmployeeID INT, @ReviewID INT, @Score INT, @EmailAddress NVARCHAR(50);
 
-    select @EmployeeID = inserted.EmployeeID, @ReviewID = inserted.ReviewID, @Score = inserted.Score
-    from inserted;
+    SELECT @EmployeeID = INSERTED.EmployeeID, @ReviewID = INSERTED.ReviewID, @Score = INSERTED.Score
+    FROM INSERTED;
 
-    if @Score < 3
-    begin
+    IF @Score < 3
+    BEGIN
         -- Insert alert into Alerts table
-        insert into employees.Alerts (EmployeeID, ReviewID, Score, AlertMessage)
-        values (@EmployeeID, @ReviewID, @Score, 'Performance score below threshold. Immediate attention required.');
+        INSERT INTO employees.Alerts (EmployeeID, ReviewID, Score, AlertMessage)
+        VALUES (@EmployeeID, @ReviewID, @Score, 'Performance score below threshold. Immediate attention required.');
 
         -- Get the employee's email address
-        select @EmailAddress = ed.Email
-        from Employees.Employee_details ed
-        where ed.EmployeeID = @EmployeeID;
+        SELECT @EmailAddress = ed.Email
+        FROM Employees.Employee_details ed
+        WHERE ed.EmployeeID = @EmployeeID;
 
         -- Send email notification
-        exec msdb.dbo.sp_send_dbmail
-            @profile_name = 'Aashish_Email',
+        EXEC msdb.dbo.sp_send_dbmail
+            @profile_name = 'Test_Gmail',
             @recipients = @EmailAddress,
             @subject = 'Low Performance Alert',
             @body = 'Your performance review score is below the acceptable threshold. Please discuss with your manager immediately.';
-    end
-end;
+    END
+END;
 ```
-## Sample Data
-
-Sample data is provided to demonstrate the functionality of the system. his includes sample records for departments, employees, performance reviews, and goals.
-
 ## Queries
 
-Predefined queries help extract valuable insights from the data. These queries are designed to provide actionable information to managers and HR personnel, enabling data-driven decision-making. Examples include calculating the average performance score by department and identifying employees with goals in progress.
+Predefined queries help extract valuable insights from the data. These queries are designed to provide actionable information to the management, enabling data-driven decision-making. Examples include calculating the average performance score by department, identifying employees with goals in progress and retrieving performance review for a specific employee.
 
 ### 1. **Average Performance Score by Department**
 
 This query calculates the average performance score for each department, providing insights into the overall performance trends within different parts of the organization.
 
 ```sql
-select 
+SELECT
 	d.DepartmentName,
-	AVG(p.Score) as AverageScore
-from Employees.Departments d
-join Employees.Employee_details ed on ed.DepartmentID = d.DepartmentID
-join Employees.PerformanceReviews p on p.EmployeeID = ed.EmployeeID
-group by d.DepartmentName;
+	AVG(p.Score) AS AverageScore
+FROM Employees.Departments d
+JOIN Employees.Employee_details ed ON ed.DepartmentID = d.DepartmentID
+JOIN Employees.PerformanceReviews p ON p.EmployeeID = ed.EmployeeID
+GROUP BY d.DepartmentName;
 ```
 
 ### 2. **Employees with Goals in Progress**
@@ -153,20 +159,26 @@ group by d.DepartmentName;
 This query lists employees who have goals currently in progress, helping managers to track ongoing objectives and support employees in achieving their targets.
 
 ```sql
-select 
-	concat(ed.FirstName,' ',ed.LastName) as Employee_Name, g.GoalDescription, g.status
-from Employees.Employee_details ed
-join Employees.Goals g on g.EmployeeID = ed.EmployeeID
-where g.Status = 'In Progress';
+SELECT
+	concat(ed.FirstName,' ',ed.LastName) AS Employee_Name,
+	g.GoalDescription,
+	g.status
+FROM Employees.Employee_details ed
+JOIN Employees.Goals g ON g.EmployeeID = ed.EmployeeID
+WHERE g.Status = 'In Progress';
 ```
 
 ### 3. **Retrieving Performance Review for a Specific Employee**
 
-This query retrieves all fields performance reviews for a specific employee based on their employee ID.
+This query retrieves all fields from performance reviews table for a specific employee based on their employee ID.
 
 ```sql
-select 
-	* 
-from employees.PerformanceReviews 
-where EmployeeID = 2;
+SELECT * 
+FROM employees.PerformanceReviews 
+WHERE EmployeeID = 2;
 ```
+
+## Sample Data
+
+Sample data is provided to demonstrate the functionality of the system. This includes sample records for departments, employees, performance reviews, and goals.
+
