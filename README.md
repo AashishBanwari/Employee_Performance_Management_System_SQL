@@ -22,9 +22,9 @@ The Employee Performance Management System is designed to streamline the process
 
 - [Database Schema](#Database-Schema)
 - [Stored Procedures](#Stored-Procedures)
-- Triggers
-- Queries
-- Sample Data
+- [Triggers](#Triggers)
+- [Queries](#Queries)
+- [Sample Data](#Sample-Data)
 
 ## Database Schema
 
@@ -186,3 +186,4 @@ WHERE EmployeeID = 2;
 
 Sample data is provided to demonstrate the functionality of the system. This includes sample records for departments, employees, performance reviews, and goals.
 
+[Click to View](https://github.com/AashishBanwari/Employee_Performance_Management_System_SQL/blob/main/Insert_Data.sql)
