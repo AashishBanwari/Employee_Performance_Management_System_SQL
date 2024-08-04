@@ -20,11 +20,11 @@ The Employee Performance Management System is designed to streamline the process
 
 ##  Table of Contents
 
-- [Database Schema](Database-Schema)
-- [Stored Procedures](Stored-Procedures)
-- [Triggers](Triggers)
-- [Queries](Queries)
-- [Sample Data](Sample-Data)
+- Database Schema
+- Stored Procedures
+- Triggers
+- Queries
+- Sample Data
 
 ## Database Schema
 
