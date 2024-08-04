@@ -32,7 +32,7 @@ The database schema is designed to capture all relevant information related to e
 
 #### **Schema Name:**
 
-Employees
+**Employees**
 
 #### **Tables inside Employees:**
 
