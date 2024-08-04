@@ -14,9 +14,9 @@ The Employee Performance Management System is designed to streamline the process
   
 - **Triggers:** Intelligent Triggers to Automatically handle specific events, such as sending Alerts/Notifications for low performance scores.
   
-- **Sample Data:** Includes sample data for departments, employees, performance reviews, and goals to demonstrate the functionality.
-  
 - **Queries:** Predefined queries to extract meaningful insights from the data, such as average performance scores by department and employees with goals in progress.
+  
+- **Sample Data:** Includes sample data for departments, employees, performance reviews, and goals to demonstrate the functionality.
 
 ##  Table of Contents
 
