@@ -1,6 +1,6 @@
 # Employee Performance Management System
 
-#### An end-to-end SQL Solution for managing Employee Performance Data. This Project Features comprehensive Stored Procedures for seamless Data Handling and Proactive Triggers for instant Alerts, demonstrating my expertise in creating robust and efficient SQL-based systems.
+#### An end-to-end SQL Solution for managing Employee Performance Data. This Project Features comprehensive Stored Procedures for seamless Data Handling and Proactive Triggers for instant notifications, demonstrating my expertise in creating robust and efficient SQL-based systems.
 
 ## Overview
 
