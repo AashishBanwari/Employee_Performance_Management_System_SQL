@@ -32,7 +32,7 @@ The database schema is designed to capture all relevant information related to e
 
 #### **Schema Name:**
 
-**Employees**
+- **Employees**
 
 #### **Tables inside Employees:**
 
@@ -46,7 +46,7 @@ The database schema is designed to capture all relevant information related to e
 
 Stored procedures are used to encapsulate common operations, ensuring efficiency and reusability. It helps in maintaining data integrity and simplify complex operations by grouping multiple SQL statements into a single procedure. 
 
-Key stored procedures in this project include:
+#### Key Stored Procedures in this Project include:
 
 ### 1.  Add Performance Review:
 
@@ -67,7 +67,7 @@ END;
 ```
 ```sql
 -- test the procedure
-EXEC sp_AddPerformanceReview 2,'2024-06-05','Jack',2,'Poor performance.' 
+EXEC sp_AddPerformanceReview @EmployeeID=2, @ReviewDate='2024-06-05', @Reviewer='Jack', @Score=2, @Comments='Poor performance' 
 ```
 ```sql
 -- verify the data
@@ -84,7 +84,7 @@ CREATE PROCEDURE sp_UpdateGoalStatus
 AS
 BEGIN
 	UPDATE Employees.Goals
-	SET Status = @status
+	SET Status = @Status
 	WHERE GoalID = @GoalID;
 END;
 ```
@@ -100,6 +100,8 @@ SELECT * FROM Employees.Goals WHERE [GoalID] = 3
 ## Triggers
 
 Triggers automate specific actions in response to certain events, ensuring data integrity and proactive management. They help enforce business rules and automate workflows without requiring manual intervention. 
+
+#### A key Trigger in this roject includes:
 
 ### Low Performance Alert:
 
@@ -138,7 +140,7 @@ END;
 ```
 ## Queries
 
-Predefined queries help extract valuable insights from the data. These queries are designed to provide actionable information to the management, enabling data-driven decision-making. Examples include calculating the average performance score by department, identifying employees with goals in progress and retrieving performance review for a specific employee.
+Queries help extract valuable insights from the data. Queries are designed to provide actionable information to the stackholders, enabling data-driven decision-making. Examples include calculating the average performance score by department, identifying employees with goals in progress and retrieving performance review for a specific employee.
 
 ### 1. **Average Performance Score by Department**
 
