@@ -1,5 +1,4 @@
  --Insert data into Departments
-
 INSERT INTO Employees.Departments (DepartmentID, DepartmentName)
 VALUES 
 (1, 'HR'),
@@ -8,7 +7,6 @@ VALUES
 (4, 'Sales');
 
  --Insert data into Employees
-
 INSERT INTO Employees.Employee_details (EmployeeID, FirstName, LastName, DepartmentID, HireDate, JobTitle, Email)
 VALUES 
 (1, 'John', 'Doe', 1, '2020-01-15', 'HR Manager','John.Doe@abccompany.com'),
@@ -17,7 +15,6 @@ VALUES
 (4, 'Alice', 'Johnson', 4, '2021-11-01', 'Sales Executive','Alice.Johnson@abccompany.com');
 
  --Insert data into PerformanceReviews
-
 INSERT INTO Employees.PerformanceReviews (EmployeeID, ReviewDate, Reviewer, Score, Comments)
 VALUES 
 (1, '2023-06-15', 'CEO', 4, 'Good performance, needs to improve leadership skills.'),
@@ -26,7 +23,6 @@ VALUES
 (4, '2023-06-15', 'CMO', 4, 'Good performance, great sales skills.');
 
  --Insert data into Goals
-
 INSERT INTO Employees.Goals (GoalID, EmployeeID, GoalDescription, StartDate, EndDate, Status)
 VALUES 
 (1, 1, 'Improve team leadership skills', '2023-01-01', '2023-12-31', 'In Progress'),
