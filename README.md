@@ -20,8 +20,8 @@ The Employee Performance Management System is designed to streamline the process
 
 ##  Table of Contents
 
-- Database Schema
-- Stored Procedures
+- [Database Schema](#Database-Schema)
+- [Stored Procedures](#Stored-Procedures)
 - Triggers
 - Queries
 - Sample Data
@@ -41,6 +41,8 @@ The database schema is designed to capture all relevant information related to e
 - **Performance Reviews:** Stores performance review records for employees.
 - **Goals:** Tracks the goals set for employees and their status.
 - **Alert:** A log for email notification sent by the trigger.
+
+[View Code](https://github.com/AashishBanwari/Employee_Performance_Management_System_SQL/blob/main/Create_Schema_Tables.sql)
 
 ## Stored Procedures
 
