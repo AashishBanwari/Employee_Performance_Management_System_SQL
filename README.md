@@ -67,13 +67,13 @@ BEGIN
     	VALUES (@EmployeeID, @ReviewDate, @Reviewer, @Score, @Comments);
 END;
 ```
+#### Test The Procedure
 ```sql
--- test the procedure
 EXEC sp_AddPerformanceReview @EmployeeID=2, @ReviewDate='2024-06-05', @Reviewer='Jack', @Score=2, @Comments='Poor performance' 
 ```
+#### Verify The Data
 ```sql
--- verify the data
-SELECT TOP (1) * FROM Employees.PerformanceReviews ORDER BY ReviewID DESC 
+SELECT TOP (1) * FROM Employees.PerformanceReviews ORDER BY ReviewID DESC -- ReviewID column has IDENTITY property
 ```
 ### 2. **Update Goal Status:** 
 
@@ -90,12 +90,12 @@ BEGIN
 	WHERE GoalID = @GoalID;
 END;
 ```
+#### Test The Procedure
 ```sql
--- test the procedure
 EXEC sp_UpdateGoalStatus @goalID = 3,@Status = 'Completed'
 ```
+#### Verify The Data
 ```sql
--- verify the data
 SELECT * FROM Employees.Goals WHERE [GoalID] = 3
 ```
 
